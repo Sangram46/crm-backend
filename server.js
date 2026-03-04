@@ -1,10 +1,3 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-dotenv.config();
-mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('MongoDB connected'))
-.catch((err) => console.error('MongoDB connection error:', err));
-
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -59,9 +52,18 @@ if (process.env.NODE_ENV === 'development') {
 
 // General API rate limiting
 app.use('/api', apiLimiter);
-// app.use('/api/users', userRoutes); // Apply to auth routes as well
 
 // ==================== ROUTES ====================
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'CRM API is running',
+    environment: process.env.NODE_ENV,
+    timestamp: new Date().toISOString(),
+  });
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
