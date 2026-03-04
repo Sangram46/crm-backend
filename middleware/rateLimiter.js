@@ -9,7 +9,7 @@ const isTest = process.env.NODE_ENV === 'test';
  */
 const loginLimiter = rateLimit({
   windowMs: parseInt(process.env.LOGIN_RATE_LIMIT_WINDOW_MS) || 10 * 60 * 1000, // 10 minutes
-  max: isTest ? 10000 : (parseInt(process.env.LOGIN_RATE_LIMIT_MAX) || 3),
+  max: isTest ? 10000 : (parseInt(process.env.LOGIN_RATE_LIMIT_MAX) || 10),
   message: {
     success: false,
     message:

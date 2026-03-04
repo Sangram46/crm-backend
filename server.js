@@ -22,24 +22,33 @@ app.set('trust proxy', 1);
 
 // ==================== MIDDLEWARE ====================
 
-// Security headers
-app.use(helmet());
+// Security headers (configured for cross-origin API usage)
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    crossOriginOpenerPolicy: { policy: 'unsafe-none' },
+  })
+);
 
 // CORS configuration
 const allowedOrigins = [
   process.env.CLIENT_URL,
+  'https://crm-frontend-ruddy-seven.vercel.app',
   'http://localhost:5173',
   'http://localhost:3000',
-].filter(Boolean);
+]
+  .filter(Boolean)
+  .map((url) => url.trim().replace(/\/+$/, '')); // trim spaces & trailing slashes
 
 app.use(
   cors({
     origin: function (origin, callback) {
       // Allow requests with no origin (mobile apps, curl, etc.)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
+      if (allowedOrigins.includes(origin.trim().replace(/\/+$/, ''))) {
         return callback(null, true);
       }
+      console.log('CORS blocked origin:', origin, 'Allowed:', allowedOrigins);
       return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
