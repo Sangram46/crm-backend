@@ -59,7 +59,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // General API rate limiting
 app.use('/api', apiLimiter);
-app.use('/api/users', userRoutes); // Apply to auth routes as well
+// app.use('/api/users', userRoutes); // Apply to auth routes as well
 
 // ==================== ROUTES ====================
 
